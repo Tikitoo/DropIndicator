@@ -32,4 +32,6 @@
         android:onClick="onDropIndicator"
         android:text="DropPagerIndicator" />
 
+
+
 </LinearLayout>

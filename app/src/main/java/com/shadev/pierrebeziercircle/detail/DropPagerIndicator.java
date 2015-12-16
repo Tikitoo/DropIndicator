@@ -11,7 +11,6 @@ import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import java.util.ArrayList;
@@ -175,7 +174,7 @@ public class DropPagerIndicator extends View {
         leftPointAnimator.setInterpolator(new DecelerateInterpolator());
         mAnimators.add(leftPointAnimator);
 
-        ObjectAnimator rightPointAnimator = ObjectAnimator.ofFloat(this, "leftCircleX", leftX, rightX);
+      /*  ObjectAnimator rightPointAnimator = ObjectAnimator.ofFloat(this, "leftCircleX", leftX, rightX);
         rightPointAnimator.setDuration(5000L);
         rightPointAnimator.setInterpolator(new AccelerateInterpolator(1.5F));
         mAnimators.add(rightPointAnimator);
@@ -189,7 +188,7 @@ public class DropPagerIndicator extends View {
         rightCircleRadiusAnimator.setDuration(5000L);
         rightCircleRadiusAnimator.setInterpolator(new DecelerateInterpolator(0.8F));
         mAnimators.add(rightCircleRadiusAnimator);
-
+*/
         int color1 = mColors.get(paramInt);
         int color2 = mColors.get(i);
         ValueAnimator paintColorAnimator = ObjectAnimator.ofInt(color1, color2);

@@ -10,10 +10,12 @@ import com.shadev.pierrebeziercircle.me.DropIndicatorActivity;
 
 public class FullscreenActivity extends ActionBarActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fullscreen);
+
 
     }
 
@@ -31,6 +33,7 @@ public class FullscreenActivity extends ActionBarActivity {
         Intent intent = new Intent(this, DropPagerIndicatorActivity.class);
         startActivity(intent);
     }
+
     public void onDropIndicator(View view) {
         startActivity(new Intent(this, DropIndicatorActivity.class));
     }

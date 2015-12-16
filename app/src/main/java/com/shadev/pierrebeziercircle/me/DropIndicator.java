@@ -1,13 +1,16 @@
 package com.shadev.pierrebeziercircle.me;
 
+import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
@@ -15,13 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DropIndicator extends View {
+    private List<Integer> mColors;
 
     private ArrayList<ValueAnimator> mAnimators;
+    private List<PointF> mPoints;
 
-
-    private Paint mPaint;
     private int mWidth;
     private int mHeight;
+
+    private Paint mPaint;
 
     private float leftCircleX;
     private float leftCircleRadius;
@@ -29,14 +34,13 @@ public class DropIndicator extends View {
     private float rightCircleX;
     private float rightCircleRadius;
 
-    private List<PointF> mPoints;
     private int mPagerCount;
 
 
     private float mMaxCircleRadius;
     private float mMinCircleRadius;
 
-    private List<Integer> mColors;
+    private Path mPath = new Path();
 
 
     private int mMode = MODE_NORMAL;
@@ -58,8 +62,8 @@ public class DropIndicator extends View {
     }
 
     private void init() {
-        mAnimators = new ArrayList<ValueAnimator>();
-        mPoints = new ArrayList<PointF>();
+        mAnimators = new ArrayList<>();
+        mPoints = new ArrayList<>();
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -72,9 +76,76 @@ public class DropIndicator extends View {
 
         canvas.drawCircle(leftCircleX, mHeight / 2, leftCircleRadius, mPaint);
         canvas.drawCircle(rightCircleX, mHeight / 2, rightCircleRadius, mPaint);
-//        canvas.drawCircle(10, 10, 10, mPaint);
-//        canvas.drawCircle(50, 50, 10, mPaint);
 
+        /*switch (mMode) {
+            case MODE_NORMAL:
+                drawModeNormal(canvas);
+                break;
+
+            case MODE_BEND:
+                drawModeBend(canvas);
+                break;
+        }*/
+
+    }
+
+    private void drawModeNormal(Canvas canvas) {
+        mPath.reset();
+
+        mPath.moveTo(rightCircleX, mHeight / 2);
+
+        mPath.lineTo(rightCircleX, mHeight / 2 - rightCircleRadius);
+
+        mPath.quadTo(rightCircleX,
+                mHeight / 2 - rightCircleRadius,
+
+                leftCircleX,
+                mHeight / 2 - leftCircleRadius);
+
+        mPath.lineTo(leftCircleX, mHeight / 2 + leftCircleRadius);
+
+        mPath.quadTo(leftCircleX,
+                mHeight / 2 + leftCircleRadius,
+
+                rightCircleX,
+                mHeight / 2 + rightCircleRadius);
+
+        mPath.close();
+
+        canvas.drawPath(mPath, mPaint);
+    }
+
+    private void drawModeBend(Canvas canvas) {
+        float middleOffset = (leftCircleX - rightCircleX) / (mPoints.get(1).x - mPoints.get(0).x) * (mHeight / 10);
+
+        mPath.reset();
+
+        mPath.moveTo(rightCircleX, mHeight / 2);
+
+        mPath.lineTo(rightCircleX, mHeight / 2 - rightCircleRadius);
+
+        mPath.cubicTo(rightCircleX,
+                mHeight / 2 - rightCircleRadius,
+
+                rightCircleX + (leftCircleX - rightCircleX) / 2.0F,
+                mHeight / 2 + middleOffset,
+
+                leftCircleX,
+                mHeight / 2 - leftCircleRadius);
+
+        mPath.lineTo(leftCircleX, mHeight / 2 + leftCircleRadius);
+
+        mPath.cubicTo(leftCircleX,
+                mHeight / 2 + leftCircleRadius,
+
+                rightCircleX + (leftCircleX - rightCircleX) / 2.0F,
+                mHeight / 2 - middleOffset,
+
+                rightCircleX,
+                mHeight / 2 + rightCircleRadius);
+
+        mPath.close();
+        canvas.drawPath(mPath, mPaint);
     }
 
     @Override
@@ -83,26 +154,20 @@ public class DropIndicator extends View {
         mWidth = w;
         mHeight = h;
 
-        mMaxCircleRadius = 0.45F * mHeight;
-        mMinCircleRadius = 0.15F * mHeight;
+        mMaxCircleRadius = 0.45f * mHeight;
+        mMinCircleRadius = 0.15f * mHeight;
 
         resetPoint();
-    }
-
-    public void setPositionAndOffset(int position, float offSet) {
-        createAnimator(position);
-        seekAnimator(offSet);
-
     }
 
     private void createAnimator(int paramInt) {
         if (mPoints.isEmpty()) {
             return;
         }
-
         mAnimators.clear();
 
         int i = Math.min(mPagerCount - 1, paramInt + 1);
+
         float leftX = mPoints.get(paramInt).x;
         float rightX = mPoints.get(i).x;
 
@@ -119,7 +184,6 @@ public class DropIndicator extends View {
         ObjectAnimator leftCircleRadiusAnimator = ObjectAnimator.ofFloat(this, "rightCircleRadius", mMinCircleRadius, mMaxCircleRadius);
         leftCircleRadiusAnimator.setDuration(5000L);
         leftCircleRadiusAnimator.setInterpolator(new AccelerateInterpolator(1.5F));
-
         mAnimators.add(leftCircleRadiusAnimator);
 
         ObjectAnimator rightCircleRadiusAnimator = ObjectAnimator.ofFloat(this, "leftCircleRadius", mMaxCircleRadius, mMinCircleRadius);
@@ -127,16 +191,36 @@ public class DropIndicator extends View {
         rightCircleRadiusAnimator.setInterpolator(new DecelerateInterpolator(0.8F));
         mAnimators.add(rightCircleRadiusAnimator);
 
+        int color1 = mColors.get(paramInt);
+        int color2 = mColors.get(i);
+        ValueAnimator paintColorAnimator = ObjectAnimator.ofInt(color1, color2);
+        paintColorAnimator.setDuration(5000L);
+        paintColorAnimator.setEvaluator(new ArgbEvaluator());
+        paintColorAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+        paintColorAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            public void onAnimationUpdate(ValueAnimator animator) {
+                mPaint.setColor((Integer) animator.getAnimatedValue());
+            }
+        });
+        mAnimators.add(paintColorAnimator);
+
     }
 
     private void seekAnimator(float offset) {
         for (ValueAnimator animator : mAnimators) {
             animator.setCurrentPlayTime((long) (5000.0F * offset));
         }
+
         postInvalidate();
     }
 
-        private void resetPoint() {
+    public void setPositionAndOffset(int position, float offSet) {
+        createAnimator(position);
+        seekAnimator(offSet);
+    }
+
+    private void resetPoint() {
         mPoints.clear();
         for (int i = 0; i < mPagerCount; i++) {
             int x = mWidth / (mPagerCount + 1) * (i + 1);
@@ -164,4 +248,9 @@ public class DropIndicator extends View {
             mPaint.setColor(colors.get(0));
         }
     }
+
+    public void setMode(int mode) {
+        this.mMode = mode;
+    }
+
 }

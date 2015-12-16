@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,7 +13,7 @@ import com.shadev.pierrebeziercircle.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DropIndicatorActivity extends AppCompatActivity {
+public class DropIndicatorActivity extends ActionBarActivity {
 
     private DropIndicator indicator;
     private ViewPager viewPager;
@@ -41,9 +41,8 @@ public class DropIndicatorActivity extends AppCompatActivity {
         colors.add(0xFFFF00FF);
         indicator.setColors(colors);
         indicator.setPagerCount(views.size());
-//        indicator.setMode(DropPagerIndicator.MODE_BEND);
+//        indicator.setMode(DropIndicator.MODE_BEND);
 
-        viewPager.setAdapter(new MiniPageAdapter());
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
@@ -61,6 +60,7 @@ public class DropIndicatorActivity extends AppCompatActivity {
 
             }
         });
+        viewPager.setAdapter(new MiniPageAdapter());
     }
 
 
