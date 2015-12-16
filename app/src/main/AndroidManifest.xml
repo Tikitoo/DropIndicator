@@ -16,6 +16,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".detail.FullscreenActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name">
+        </activity>
+        <activity
+            android:name=".detail.BezierViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".detail.DropPagerIndicatorActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name" />
+
+        <activity
+            android:name=".detail.BezierEvaluatorActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name" />
+
+        <activity
+            android:name=".me.DropIndicatorActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name" />
+
+
+
     </application>
 
 </manifest>
