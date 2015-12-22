@@ -1,4 +1,4 @@
-package com.shadev.dropindicator;
+package com.loopeer.android.librarys.dropindicator.app;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
