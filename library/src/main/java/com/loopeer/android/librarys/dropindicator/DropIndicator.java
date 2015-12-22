@@ -1,4 +1,4 @@
-package com.shadev.pierrebeziercircle.detail;
+package com.loopeer.android.librarys.dropindicator;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
@@ -17,7 +17,7 @@ import android.view.animation.DecelerateInterpolator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DropPagerIndicator extends View {
+public class DropIndicator extends View {
 
     private List<Integer> mColors;
 
@@ -25,6 +25,8 @@ public class DropPagerIndicator extends View {
 
     private int mWidth;
     private int mHeight;
+
+    private float normalCircleRadius;
 
     private float leftCircleRadius;
     private float leftCircleX;
@@ -39,6 +41,9 @@ public class DropPagerIndicator extends View {
     private float mMaxCircleRadius;
     private float mMinCircleRadius;
 
+    private Paint mNormalPaint;
+    private Paint mNormalPaintDefault;
+
     private Paint mPaint;
     private Path mPath = new Path();
 
@@ -46,16 +51,17 @@ public class DropPagerIndicator extends View {
 
     public static final int MODE_NORMAL = 1;
     public static final int MODE_BEND = 2;
+    private int mPosition;
 
-    public DropPagerIndicator(Context context) {
+    public DropIndicator(Context context) {
         this(context, null);
     }
 
-    public DropPagerIndicator(Context context, AttributeSet attrs) {
+    public DropIndicator(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public DropPagerIndicator(Context context, AttributeSet attrs, int defStyleAttr) {
+    public DropIndicator(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -67,6 +73,15 @@ public class DropPagerIndicator extends View {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.FILL);
+
+        mNormalPaint = new Paint();
+        mNormalPaint.setAntiAlias(true);
+        mNormalPaint.setStyle(Paint.Style.FILL);
+
+        mNormalPaintDefault = new Paint();
+        mNormalPaintDefault.setAntiAlias(true);
+        mNormalPaintDefault.setStyle(Paint.Style.FILL);
+
     }
 
     @Override
@@ -75,6 +90,14 @@ public class DropPagerIndicator extends View {
 
         canvas.drawCircle(leftCircleX, mHeight / 2, leftCircleRadius, mPaint);
         canvas.drawCircle(rightCircleX, mHeight / 2, rightCircleRadius, mPaint);
+
+        for (int i = 0; i < mPagerCount; i++) {
+            if (i == mPosition) {
+                canvas.drawCircle(getWidth() / (mPagerCount + 1) * (i + 1), mHeight / 2, leftCircleRadius, mNormalPaintDefault);
+            } else {
+                canvas.drawCircle(getWidth() / (mPagerCount + 1) * (i + 1), mHeight / 2, leftCircleRadius, mNormalPaint);
+            }
+        }
 
         switch (mMode) {
             case MODE_NORMAL:
@@ -149,16 +172,16 @@ public class DropPagerIndicator extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mWidth = w;
+//        mWidth = w;
         mHeight = h;
 
-        mMaxCircleRadius = 0.15f * mHeight;
-        mMinCircleRadius = 0.15f * mHeight;
+        /*mMaxCircleRadius = 0.15f * mHeight;
+        mMinCircleRadius = 0.15f * mHeight;*/
 
         resetPoint();
     }
 
-    private void createAnimator(int paramInt) {
+    private void createAnimator(final int paramInt) {
         if (mPoints.isEmpty()) {
             return;
         }
@@ -179,7 +202,7 @@ public class DropPagerIndicator extends View {
         rightPointAnimator.setInterpolator(new AccelerateInterpolator(1.5F));
         mAnimators.add(rightPointAnimator);
 
-        ObjectAnimator leftCircleRadiusAnimator = ObjectAnimator.ofFloat(this, "rightCircleRadius", mMinCircleRadius, mMaxCircleRadius);
+        /*ObjectAnimator leftCircleRadiusAnimator = ObjectAnimator.ofFloat(this, "rightCircleRadius", mMinCircleRadius, mMaxCircleRadius);
         leftCircleRadiusAnimator.setDuration(5000L);
         leftCircleRadiusAnimator.setInterpolator(new AccelerateInterpolator(1.5F));
         mAnimators.add(leftCircleRadiusAnimator);
@@ -187,10 +210,10 @@ public class DropPagerIndicator extends View {
         ObjectAnimator rightCircleRadiusAnimator = ObjectAnimator.ofFloat(this, "leftCircleRadius", mMaxCircleRadius, mMinCircleRadius);
         rightCircleRadiusAnimator.setDuration(5000L);
         rightCircleRadiusAnimator.setInterpolator(new DecelerateInterpolator(0.8F));
-        mAnimators.add(rightCircleRadiusAnimator);
+        mAnimators.add(rightCircleRadiusAnimator);*/
 
-        int color1 = mColors.get(paramInt);
-        int color2 = mColors.get(i);
+        int color1 = mColors.get(0);
+        int color2 = mColors.get(0);
         ValueAnimator paintColorAnimator = ObjectAnimator.ofInt(color1, color2);
         paintColorAnimator.setDuration(5000L);
         paintColorAnimator.setEvaluator(new ArgbEvaluator());
@@ -198,9 +221,12 @@ public class DropPagerIndicator extends View {
         paintColorAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
             public void onAnimationUpdate(ValueAnimator animator) {
-                mPaint.setColor((Integer) animator.getAnimatedValue());
+                mPaint.setColor(mColors.get(0));
+                mNormalPaint.setColor(mColors.get(0));
+                mNormalPaintDefault.setColor(mColors.get(1));
             }
         });
+
         mAnimators.add(paintColorAnimator);
     }
 
@@ -212,6 +238,7 @@ public class DropPagerIndicator extends View {
     }
 
     public void setPositionAndOffset(int position, float offSet) {
+        mPosition = position;
         createAnimator(position);
         seekAnimator(offSet);
     }
@@ -242,6 +269,16 @@ public class DropPagerIndicator extends View {
 
         if (!colors.isEmpty()) {
             mPaint.setColor(colors.get(0));
+        }
+    }
+
+    public void setColors(Integer[] colors) {
+        for (int i = 0; i < colors.length; i++) {
+            mColors.add(colors[i]);
+        }
+
+        if (colors.length != 0) {
+            mPaint.setColor(colors[0]);
         }
     }
 
@@ -280,5 +317,37 @@ public class DropPagerIndicator extends View {
 
     public void setRightCircleX(float rightCircleX) {
         this.rightCircleX = rightCircleX;
+    }
+
+    public void setMaxCircleRadius(float maxCircleRadius) {
+        mMaxCircleRadius = maxCircleRadius;
+    }
+
+    public float getMaxCircleRadius() {
+        return mMaxCircleRadius;
+    }
+
+    public void setMinCircleRadius(float minCircleRadius) {
+        mMinCircleRadius = minCircleRadius;
+    }
+
+    public float getMinCircleRadius() {
+        return mMinCircleRadius;
+    }
+
+    public float getNormalCircleRadius() {
+        return normalCircleRadius;
+    }
+
+    public void setNormalCircleRadius(float normalCircleRadius) {
+        this.normalCircleRadius = normalCircleRadius;
+    }
+
+    public int getWidth2() {
+        return mWidth;
+    }
+
+    public void setWidth(int width) {
+        mWidth = width;
     }
 }

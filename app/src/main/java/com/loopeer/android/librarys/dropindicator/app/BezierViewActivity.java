@@ -1,9 +1,9 @@
-package com.shadev.pierrebeziercircle.detail;
+package com.loopeer.android.librarys.dropindicator.app;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
-import com.shadev.pierrebeziercircle.R;
+
 
 /**
  * Created by gavin on 15-4-2.

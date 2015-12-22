@@ -1,4 +1,4 @@
-package com.shadev.pierrebeziercircle.detail;
+package com.loopeer.android.librarys.dropindicator;
 
 import android.animation.TypeEvaluator;
 import android.graphics.PointF;

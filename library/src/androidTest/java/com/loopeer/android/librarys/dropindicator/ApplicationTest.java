@@ -1,4 +1,4 @@
-package com.shadev.pierrebeziercircle;
+package com.loopeer.android.librarys.dropindicator;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

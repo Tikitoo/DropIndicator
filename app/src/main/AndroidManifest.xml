@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.shadev.pierrebeziercircle" >
+    package="com.loopeer.android.librarys.dropindicator.app" >
 
     <application
         android:allowBackup="true"
@@ -18,26 +18,26 @@
         </activity>
 
         <activity
-            android:name=".detail.FullscreenActivity"
+            android:name=".FullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name">
         </activity>
         <activity
-            android:name=".detail.BezierViewActivity"
+            android:name=".BezierViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name" />
         <activity
-            android:name=".detail.DropPagerIndicatorActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name" />
-
-        <activity
-            android:name=".detail.BezierEvaluatorActivity"
+            android:name=".DropPagerIndicatorActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name" />
 
         <activity
-            android:name=".me.DropIndicatorActivity"
+            android:name=".BezierEvaluatorActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name" />
+
+        <activity
+            android:name=".DropIndicatorActivity"
             android:label="@string/app_name" />
 
 

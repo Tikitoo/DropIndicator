@@ -1,12 +1,9 @@
-package com.shadev.pierrebeziercircle.detail;
+package com.loopeer.android.librarys.dropindicator.app;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
-
-import com.shadev.pierrebeziercircle.R;
-import com.shadev.pierrebeziercircle.me.DropIndicatorActivity;
 
 public class FullscreenActivity extends ActionBarActivity {
 

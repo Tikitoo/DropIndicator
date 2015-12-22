@@ -1,4 +1,4 @@
-package com.shadev.pierrebeziercircle.detail;
+package com.loopeer.android.librarys.dropindicator;
 
 import android.content.Context;
 import android.graphics.Canvas;
