@@ -44,9 +44,7 @@ public class DropPagerIndicatorActivity extends ActionBarActivity {
         colors.add(0xFFFF00FF);
         indicator.setColors(colors);
         indicator.setPagerCount(views.size());
-        indicator.setMode(DropPagerIndicator.MODE_BEND);
-
-
+//        indicator.setMode(DropPagerIndicator.MODE_BEND);
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 

@@ -18,35 +18,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DropIndicator extends View {
+
     private List<Integer> mColors;
 
     private ArrayList<ValueAnimator> mAnimators;
-    private List<PointF> mPoints;
 
     private int mWidth;
     private int mHeight;
 
-    private Paint mPaint;
+    private float normalCircleRadius;
 
-    private float leftCircleX;
     private float leftCircleRadius;
+    private float leftCircleX;
 
-    private float rightCircleX;
     private float rightCircleRadius;
+    private float rightCircleX;
+
+    private List<PointF> mPoints;
 
     private int mPagerCount;
-
 
     private float mMaxCircleRadius;
     private float mMinCircleRadius;
 
-    private Path mPath = new Path();
+    private Paint mNormalPaint;
+    private Paint mNormalPaintDefault;
 
+    private Paint mPaint;
+    private Path mPath = new Path();
 
     private int mMode = MODE_NORMAL;
 
     public static final int MODE_NORMAL = 1;
     public static final int MODE_BEND = 2;
+    private int mPosition;
 
     public DropIndicator(Context context) {
         this(context, null);
@@ -68,6 +73,15 @@ public class DropIndicator extends View {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.FILL);
+
+        mNormalPaint = new Paint();
+        mNormalPaint.setAntiAlias(true);
+        mNormalPaint.setStyle(Paint.Style.FILL);
+
+        mNormalPaintDefault = new Paint();
+        mNormalPaintDefault.setAntiAlias(true);
+        mNormalPaintDefault.setStyle(Paint.Style.FILL);
+
     }
 
     @Override
@@ -77,15 +91,22 @@ public class DropIndicator extends View {
         canvas.drawCircle(leftCircleX, mHeight / 2, leftCircleRadius, mPaint);
         canvas.drawCircle(rightCircleX, mHeight / 2, rightCircleRadius, mPaint);
 
-        /*switch (mMode) {
+        for (int i = 0; i < mPagerCount; i++) {
+            if (i == mPosition) {
+                canvas.drawCircle(getWidth() / (mPagerCount + 1) * (i + 1), mHeight / 2, normalCircleRadius, mNormalPaint);
+            } else {
+                canvas.drawCircle(getWidth() / (mPagerCount + 1) * (i + 1), mHeight / 2, leftCircleRadius, mNormalPaint);
+            }
+        }
+
+        switch (mMode) {
             case MODE_NORMAL:
                 drawModeNormal(canvas);
                 break;
-
             case MODE_BEND:
                 drawModeBend(canvas);
                 break;
-        }*/
+        }
 
     }
 
@@ -154,13 +175,13 @@ public class DropIndicator extends View {
         mWidth = w;
         mHeight = h;
 
-        mMaxCircleRadius = 0.45f * mHeight;
-        mMinCircleRadius = 0.15f * mHeight;
+        /*mMaxCircleRadius = 0.15f * mHeight;
+        mMinCircleRadius = 0.15f * mHeight;*/
 
         resetPoint();
     }
 
-    private void createAnimator(int paramInt) {
+    private void createAnimator(final int paramInt) {
         if (mPoints.isEmpty()) {
             return;
         }
@@ -181,7 +202,7 @@ public class DropIndicator extends View {
         rightPointAnimator.setInterpolator(new AccelerateInterpolator(1.5F));
         mAnimators.add(rightPointAnimator);
 
-        ObjectAnimator leftCircleRadiusAnimator = ObjectAnimator.ofFloat(this, "rightCircleRadius", mMinCircleRadius, mMaxCircleRadius);
+        /*ObjectAnimator leftCircleRadiusAnimator = ObjectAnimator.ofFloat(this, "rightCircleRadius", mMinCircleRadius, mMaxCircleRadius);
         leftCircleRadiusAnimator.setDuration(5000L);
         leftCircleRadiusAnimator.setInterpolator(new AccelerateInterpolator(1.5F));
         mAnimators.add(leftCircleRadiusAnimator);
@@ -189,10 +210,10 @@ public class DropIndicator extends View {
         ObjectAnimator rightCircleRadiusAnimator = ObjectAnimator.ofFloat(this, "leftCircleRadius", mMaxCircleRadius, mMinCircleRadius);
         rightCircleRadiusAnimator.setDuration(5000L);
         rightCircleRadiusAnimator.setInterpolator(new DecelerateInterpolator(0.8F));
-        mAnimators.add(rightCircleRadiusAnimator);
+        mAnimators.add(rightCircleRadiusAnimator);*/
 
-        int color1 = mColors.get(paramInt);
-        int color2 = mColors.get(i);
+        int color1 = mColors.get(0);
+        int color2 = mColors.get(0);
         ValueAnimator paintColorAnimator = ObjectAnimator.ofInt(color1, color2);
         paintColorAnimator.setDuration(5000L);
         paintColorAnimator.setEvaluator(new ArgbEvaluator());
@@ -201,21 +222,23 @@ public class DropIndicator extends View {
 
             public void onAnimationUpdate(ValueAnimator animator) {
                 mPaint.setColor((Integer) animator.getAnimatedValue());
+                mNormalPaint.setColor(mColors.get(0));
+                mNormalPaintDefault.setColor(mColors.get(1));
             }
         });
-        mAnimators.add(paintColorAnimator);
 
+        mAnimators.add(paintColorAnimator);
     }
 
     private void seekAnimator(float offset) {
         for (ValueAnimator animator : mAnimators) {
             animator.setCurrentPlayTime((long) (5000.0F * offset));
         }
-
         postInvalidate();
     }
 
     public void setPositionAndOffset(int position, float offSet) {
+        mPosition = position;
         createAnimator(position);
         seekAnimator(offSet);
     }
@@ -249,8 +272,82 @@ public class DropIndicator extends View {
         }
     }
 
+    public void setColors(Integer[] colors) {
+        for (int i = 0; i < colors.length; i++) {
+            mColors.add(colors[i]);
+        }
+
+        if (colors.length != 0) {
+            mPaint.setColor(colors[0]);
+        }
+    }
+
     public void setMode(int mode) {
         this.mMode = mode;
     }
 
+
+    public float getLeftCircleX() {
+        return leftCircleX;
+    }
+
+    public void setLeftCircleX(float leftCircleX) {
+        this.leftCircleX = leftCircleX;
+    }
+
+    public float getLeftCircleRadius() {
+        return leftCircleRadius;
+    }
+
+    public void setLeftCircleRadius(float leftCircleRadius) {
+        this.leftCircleRadius = leftCircleRadius;
+    }
+
+    public float getRightCircleRadius() {
+        return rightCircleRadius;
+    }
+
+    public void setRightCircleRadius(float rightCircleRadius) {
+        this.rightCircleRadius = rightCircleRadius;
+    }
+
+    public float getRightCircleX() {
+        return rightCircleX;
+    }
+
+    public void setRightCircleX(float rightCircleX) {
+        this.rightCircleX = rightCircleX;
+    }
+
+    public void setMaxCircleRadius(float maxCircleRadius) {
+        mMaxCircleRadius = maxCircleRadius;
+    }
+
+    public float getMaxCircleRadius() {
+        return mMaxCircleRadius;
+    }
+
+    public void setMinCircleRadius(float minCircleRadius) {
+        mMinCircleRadius = minCircleRadius;
+    }
+
+    public float getMinCircleRadius() {
+        return mMinCircleRadius;
+    }
+
+    public float getNormalCircleRadius() {
+        return normalCircleRadius;
+    }
+
+    public void setNormalCircleRadius(float normalCircleRadius) {
+        this.normalCircleRadius = normalCircleRadius;
+    }
+
+    public int getWidth2() {
+        return mWidth;
+    }
+
+    public void setWidth(int width) {
+        mWidth = width;
+    }
 }

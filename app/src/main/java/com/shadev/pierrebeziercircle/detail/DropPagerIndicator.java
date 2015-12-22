@@ -11,6 +11,7 @@ import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import java.util.ArrayList;
@@ -75,15 +76,14 @@ public class DropPagerIndicator extends View {
         canvas.drawCircle(leftCircleX, mHeight / 2, leftCircleRadius, mPaint);
         canvas.drawCircle(rightCircleX, mHeight / 2, rightCircleRadius, mPaint);
 
-        /*switch (mMode) {
+        switch (mMode) {
             case MODE_NORMAL:
                 drawModeNormal(canvas);
                 break;
-
             case MODE_BEND:
                 drawModeBend(canvas);
                 break;
-        }*/
+        }
 
     }
 
@@ -152,7 +152,7 @@ public class DropPagerIndicator extends View {
         mWidth = w;
         mHeight = h;
 
-        mMaxCircleRadius = 0.45f * mHeight;
+        mMaxCircleRadius = 0.15f * mHeight;
         mMinCircleRadius = 0.15f * mHeight;
 
         resetPoint();
@@ -174,7 +174,7 @@ public class DropPagerIndicator extends View {
         leftPointAnimator.setInterpolator(new DecelerateInterpolator());
         mAnimators.add(leftPointAnimator);
 
-      /*  ObjectAnimator rightPointAnimator = ObjectAnimator.ofFloat(this, "leftCircleX", leftX, rightX);
+        ObjectAnimator rightPointAnimator = ObjectAnimator.ofFloat(this, "leftCircleX", leftX, rightX);
         rightPointAnimator.setDuration(5000L);
         rightPointAnimator.setInterpolator(new AccelerateInterpolator(1.5F));
         mAnimators.add(rightPointAnimator);
@@ -188,7 +188,7 @@ public class DropPagerIndicator extends View {
         rightCircleRadiusAnimator.setDuration(5000L);
         rightCircleRadiusAnimator.setInterpolator(new DecelerateInterpolator(0.8F));
         mAnimators.add(rightCircleRadiusAnimator);
-*/
+
         int color1 = mColors.get(paramInt);
         int color2 = mColors.get(i);
         ValueAnimator paintColorAnimator = ObjectAnimator.ofInt(color1, color2);
@@ -201,7 +201,6 @@ public class DropPagerIndicator extends View {
                 mPaint.setColor((Integer) animator.getAnimatedValue());
             }
         });
-
         mAnimators.add(paintColorAnimator);
     }
 
@@ -209,7 +208,6 @@ public class DropPagerIndicator extends View {
         for (ValueAnimator animator : mAnimators) {
             animator.setCurrentPlayTime((long) (5000.0F * offset));
         }
-
         postInvalidate();
     }
 

@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,6 +20,7 @@ public class DropIndicatorActivity extends ActionBarActivity {
     private ViewPager viewPager;
 
     private List<View> views;
+    private static final String TAG = "DropIndicatorActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +43,11 @@ public class DropIndicatorActivity extends ActionBarActivity {
         colors.add(0xFFFF00FF);
         indicator.setColors(colors);
         indicator.setPagerCount(views.size());
+        int indicatorHeight = indicator.getLayoutParams().height;
+        int indicatorWidth = indicator.getLayoutParams().width;
+        indicator.setMaxCircleRadius(0.15F * indicatorHeight);
+        indicator.setMinCircleRadius(0.15F * indicatorHeight);
+        indicator.setNormalCircleRadius(0.25F * indicatorHeight);
 //        indicator.setMode(DropIndicator.MODE_BEND);
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -61,6 +68,11 @@ public class DropIndicatorActivity extends ActionBarActivity {
             }
         });
         viewPager.setAdapter(new MiniPageAdapter());
+    }
+
+    private int dptoPx(int dp) {
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        return (int)((dp * displayMetrics.density) + 0.5);
     }
 
 
