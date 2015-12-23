@@ -93,9 +93,9 @@ public class DropIndicator extends View {
 
         for (int i = 0; i < mPagerCount; i++) {
             if (i == mPosition) {
-                canvas.drawCircle(getWidth() / (mPagerCount + 1) * (i + 1), mHeight / 2, normalCircleRadius, mNormalPaintDefault);
+                canvas.drawCircle(getWidth() / (mPagerCount + 3) * (i + 2), mHeight / 2, normalCircleRadius, mNormalPaintDefault);
             } else {
-                canvas.drawCircle(getWidth() / (mPagerCount + 1) * (i + 1), mHeight / 2, leftCircleRadius, mNormalPaint);
+                canvas.drawCircle(getWidth() / (mPagerCount + 3) * (i + 2), mHeight / 2, leftCircleRadius, mNormalPaint);
             }
         }
 
@@ -246,7 +246,7 @@ public class DropIndicator extends View {
     private void resetPoint() {
         mPoints.clear();
         for (int i = 0; i < mPagerCount; i++) {
-            int x = mWidth / (mPagerCount + 1) * (i + 1);
+            int x = mWidth / (mPagerCount + 3) * (i + 2);
             mPoints.add(new PointF(x, 0));
         }
 
