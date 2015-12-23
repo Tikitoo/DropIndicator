@@ -93,7 +93,7 @@ public class DropIndicator extends View {
 
         for (int i = 0; i < mPagerCount; i++) {
             if (i == mPosition) {
-                canvas.drawCircle(getWidth() / (mPagerCount + 1) * (i + 1), mHeight / 2, leftCircleRadius, mNormalPaintDefault);
+                canvas.drawCircle(getWidth() / (mPagerCount + 1) * (i + 1), mHeight / 2, normalCircleRadius, mNormalPaintDefault);
             } else {
                 canvas.drawCircle(getWidth() / (mPagerCount + 1) * (i + 1), mHeight / 2, leftCircleRadius, mNormalPaint);
             }
@@ -172,7 +172,7 @@ public class DropIndicator extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-//        mWidth = w;
+        mWidth = w;
         mHeight = h;
 
         /*mMaxCircleRadius = 0.15f * mHeight;
@@ -223,7 +223,7 @@ public class DropIndicator extends View {
             public void onAnimationUpdate(ValueAnimator animator) {
                 mPaint.setColor(mColors.get(0));
                 mNormalPaint.setColor(mColors.get(0));
-                mNormalPaintDefault.setColor(mColors.get(1));
+                mNormalPaintDefault.setColor(mColors.get(0));
             }
         });
 
