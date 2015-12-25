@@ -41,6 +41,11 @@
             android:label="@string/app_name" />
 
 
+        <activity
+            android:name=".DriveIndicatorActivity"
+            android:label="@string/app_name" />
+
+
 
     </application>
 

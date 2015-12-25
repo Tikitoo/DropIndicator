@@ -35,6 +35,10 @@ public class FullscreenActivity extends ActionBarActivity {
         startActivity(new Intent(this, DropIndicatorActivity.class));
     }
 
+    public void onDriveIndicator(View view) {
+        startActivity(new Intent(this, DriveIndicatorActivity.class));
+    }
+
 
 
 }

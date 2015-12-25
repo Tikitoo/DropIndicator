@@ -41,11 +41,11 @@ public class DropIndicatorActivity extends ActionBarActivity {
         indicator.setPagerCount(views.size());
         int indicatorHeight = indicator.getLayoutParams().height;
         int indicatorWidth = indicator.getLayoutParams().width;
-        indicator.setMaxCircleRadius(0.25F * indicatorHeight);
+        indicator.setMaxCircleRadius(0.15F * indicatorHeight);
         indicator.setMinCircleRadius(0.15F * indicatorHeight);
         indicator.setNormalCircleRadius(0.15F * indicatorHeight);
 //        indicator.setWidth(1 / 3 * indicatorHeight);
-        indicator.setMode(DropIndicator.MODE_BEND);
+//        indicator.setMode(DropIndicator.MODE_BEND);
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
