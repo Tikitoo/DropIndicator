@@ -34,20 +34,16 @@ public class DropIndicatorActivity extends ActionBarActivity {
         views.add(getLayoutInflater().inflate(R.layout.layout_pager, null));
         views.add(getLayoutInflater().inflate(R.layout.layout_pager, null));
         views.add(getLayoutInflater().inflate(R.layout.layout_pager, null));
-        views.add(getLayoutInflater().inflate(R.layout.layout_pager, null));
+//        views.add(getLayoutInflater().inflate(R.layout.layout_pager, null));
 
-        ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(0xFFFF0000);
-        colors.add(0xFF00FF00);
-        colors.add(0xFF0000FF);
-        colors.add(0xFFFF00FF);
-        indicator.setColors(colors);
+        indicator.setNormalColor(getResources().getColor(R.color.theme_accent));
+        indicator.setSelctColor(getResources().getColor(R.color.theme_accent_02));
         indicator.setPagerCount(views.size());
         int indicatorHeight = indicator.getLayoutParams().height;
         int indicatorWidth = indicator.getLayoutParams().width;
-        indicator.setMaxCircleRadius(0.15F * indicatorHeight);
+        indicator.setMaxCircleRadius(0.25F * indicatorHeight);
         indicator.setMinCircleRadius(0.15F * indicatorHeight);
-        indicator.setNormalCircleRadius(0.25F * indicatorHeight);
+        indicator.setNormalCircleRadius(0.15F * indicatorHeight);
 //        indicator.setWidth(1 / 3 * indicatorHeight);
         indicator.setMode(DropIndicator.MODE_BEND);
 

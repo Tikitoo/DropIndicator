@@ -1,6 +1,5 @@
 package com.loopeer.android.librarys.dropindicator;
 
-import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -10,7 +9,6 @@ import android.graphics.Path;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
@@ -20,6 +18,9 @@ import java.util.List;
 public class DropIndicator extends View {
 
     private List<Integer> mColors;
+    private Integer mNormalColor;
+    private Integer mSelctColor;
+
 
     private ArrayList<ValueAnimator> mAnimators;
 
@@ -42,7 +43,7 @@ public class DropIndicator extends View {
     private float mMinCircleRadius;
 
     private Paint mNormalPaint;
-    private Paint mNormalPaintDefault;
+    private Paint mNormalPaintDefaulSelect;
 
     private Paint mPaint;
     private Path mPath = new Path();
@@ -73,14 +74,15 @@ public class DropIndicator extends View {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.FILL);
+//        mPaint.setColor(Color.RED);
 
         mNormalPaint = new Paint();
         mNormalPaint.setAntiAlias(true);
-        mNormalPaint.setStyle(Paint.Style.FILL);
+        mNormalPaint.setStyle(Paint.Style.STROKE);
 
-        mNormalPaintDefault = new Paint();
-        mNormalPaintDefault.setAntiAlias(true);
-        mNormalPaintDefault.setStyle(Paint.Style.FILL);
+        mNormalPaintDefaulSelect = new Paint();
+        mNormalPaintDefaulSelect.setAntiAlias(true);
+        mNormalPaintDefaulSelect.setStyle(Paint.Style.FILL);
 
     }
 
@@ -92,12 +94,15 @@ public class DropIndicator extends View {
         canvas.drawCircle(rightCircleX, mHeight / 2, rightCircleRadius, mPaint);
 
         for (int i = 0; i < mPagerCount; i++) {
+            canvas.drawCircle(getWidth2() / (mPagerCount + 3) * (i + 2) , mHeight / 2, rightCircleRadius, mNormalPaint);
+        }
+        /*for (int i = 0; i < mPagerCount; i++) {
             if (i == mPosition) {
-                canvas.drawCircle(getWidth() / (mPagerCount + 3) * (i + 2), mHeight / 2, normalCircleRadius, mNormalPaintDefault);
+//                canvas.drawCircle(getWidth() / (mPagerCount + 3) * (i + 2), mHeight / 2, normalCircleRadius, mNormalPaintDefaulSelect);
             } else {
                 canvas.drawCircle(getWidth() / (mPagerCount + 3) * (i + 2), mHeight / 2, leftCircleRadius, mNormalPaint);
             }
-        }
+        }*/
 
         switch (mMode) {
             case MODE_NORMAL:
@@ -212,7 +217,7 @@ public class DropIndicator extends View {
         rightCircleRadiusAnimator.setInterpolator(new DecelerateInterpolator(0.8F));
         mAnimators.add(rightCircleRadiusAnimator);*/
 
-        int color1 = mColors.get(0);
+        /*int color1 = mColors.get(0);
         int color2 = mColors.get(0);
         ValueAnimator paintColorAnimator = ObjectAnimator.ofInt(color1, color2);
         paintColorAnimator.setDuration(5000L);
@@ -223,11 +228,11 @@ public class DropIndicator extends View {
             public void onAnimationUpdate(ValueAnimator animator) {
                 mPaint.setColor(mColors.get(0));
                 mNormalPaint.setColor(mColors.get(0));
-                mNormalPaintDefault.setColor(mColors.get(0));
+                mNormalPaintDefaulSelect.setColor(mColors.get(0));
             }
         });
+        mAnimators.add(paintColorAnimator);*/
 
-        mAnimators.add(paintColorAnimator);
     }
 
     private void seekAnimator(float offset) {
@@ -269,6 +274,8 @@ public class DropIndicator extends View {
 
         if (!colors.isEmpty()) {
             mPaint.setColor(colors.get(0));
+            mNormalPaint.setColor(colors.get(0));
+            mNormalPaintDefaulSelect.setColor(colors.get(0));
         }
     }
 
@@ -349,5 +356,24 @@ public class DropIndicator extends View {
 
     public void setWidth(int width) {
         mWidth = width;
+    }
+
+    public Integer getNormalColor() {
+        return mNormalColor;
+    }
+
+    public void setNormalColor(Integer normalColor) {
+        mNormalColor = normalColor;
+        mPaint.setColor(normalColor);
+        mNormalPaint.setColor(normalColor);
+    }
+
+    public Integer getSelctColor() {
+        return mSelctColor;
+    }
+
+    public void setSelctColor(Integer selctColor) {
+        mSelctColor = selctColor;
+        mNormalPaintDefaulSelect.setColor(selctColor);
     }
 }
