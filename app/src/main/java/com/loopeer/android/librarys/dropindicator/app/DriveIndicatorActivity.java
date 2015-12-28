@@ -7,12 +7,14 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.loopeer.android.librarys.dropindicator.DriveIndicator;
+import com.loopeer.android.librarys.dropindicator.DrivePagerIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DriveIndicatorActivity extends Activity {
+    public static final String TAG = "DriveIndicatorActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,18 +27,19 @@ public class DriveIndicatorActivity extends Activity {
         views.add(getLayoutInflater().inflate(R.layout.layout_pager, null));
         views.add(getLayoutInflater().inflate(R.layout.layout_pager, null));
         views.add(getLayoutInflater().inflate(R.layout.layout_pager, null));
-        views.add(getLayoutInflater().inflate(R.layout.layout_pager, null));
 
-        final DriveIndicator driveIndicator = (DriveIndicator) findViewById(R.id.drive_indicator_view);
+        final DrivePagerIndicator driveIndicator = (DrivePagerIndicator) findViewById(R.id.drive_page_indicator_view);
         driveIndicator.setCount(3);
         int height = driveIndicator.getLayoutParams().height;
+        int width = driveIndicator.getLayoutParams().width;
         driveIndicator.setRadius(0.15F * height);
+        driveIndicator.setCircleX(width / 4);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                driveIndicator.setPositionAndOffset(position, positionOffset, positionOffsetPixels);
+//                driveIndicator.setPositionAndOffset(position, positionOffset, positionOffsetPixels);
             }
 
             @Override
@@ -49,6 +52,7 @@ public class DriveIndicatorActivity extends Activity {
 
             }
         });
+
 
         viewPager.setAdapter(new PagerAdapter() {
 

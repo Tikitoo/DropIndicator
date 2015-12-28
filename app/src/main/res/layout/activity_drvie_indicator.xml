@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.loopeer.android.librarys.dropindicator.DriveIndicator
-        android:id="@+id/drive_indicator_view"
+    <com.loopeer.android.librarys.dropindicator.DrivePagerIndicator
+        android:id="@+id/drive_page_indicator_view"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@android:color/darker_gray"
