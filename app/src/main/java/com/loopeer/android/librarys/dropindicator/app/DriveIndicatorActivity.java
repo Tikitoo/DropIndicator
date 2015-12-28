@@ -39,7 +39,7 @@ public class DriveIndicatorActivity extends Activity {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//                driveIndicator.setPositionAndOffset(position, positionOffset, positionOffsetPixels);
+                driveIndicator.setPositionAndOffset(position, positionOffset, positionOffsetPixels);
             }
 
             @Override

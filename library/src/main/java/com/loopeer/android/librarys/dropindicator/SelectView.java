@@ -14,9 +14,12 @@ public class SelectView extends View {
     private int position;
     private int mWidth;
     private int mHeight;
-    private int radius;
+    private float radius;
     private Paint mPaint;
     private float leftCircleX;
+    private float rightCircleX;
+    private int leftCircleY;
+    private int circlePositionY;
 
     public SelectView(Context context) {
         this(context, null);
@@ -44,27 +47,55 @@ public class SelectView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         mWidth = w;
         mHeight = h;
+
+        leftCircleX = (position + 1) * mWidth / 4;
+        rightCircleX = (position + 2) * mWidth / 4;
+        leftCircleY = mHeight / 2;
+        circlePositionY = 0;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        drawOwnPath(canvas);
+//        drawOwnPath(canvas);
+        drawOwnPathBeize(canvas);
+    }
+
+    private void drawOwnPathBeize(Canvas canvas) {
+        mPath.reset();
+        mPath.moveTo(leftCircleX, leftCircleY + radius);
+        mPath.addArc(new RectF(
+                        leftCircleX - radius,
+                        leftCircleY - radius, leftCircleX + radius,
+                        leftCircleY + radius),
+                90, 180);
+        mPath.cubicTo(
+                leftCircleX, leftCircleY - radius,
+                leftCircleX + (rightCircleX - leftCircleX) / 2, leftCircleY - circlePositionY,
+                rightCircleX, leftCircleY - radius);
+
+        mPath.addArc(new RectF(
+                        rightCircleX - radius, leftCircleY - radius,
+                        rightCircleX + radius, leftCircleY + radius),
+                -90, 180);
+        mPath.cubicTo(
+                rightCircleX, leftCircleY + radius,
+                leftCircleX + (rightCircleX - leftCircleX) / 2, leftCircleY + circlePositionY,
+                leftCircleX, leftCircleY + radius);
+//        mPath.close();
+        canvas.drawPath(mPath, mPaint);
+
     }
 
     private void drawOwnPath(Canvas canvas) {
-        leftCircleX = (position + 1) * mWidth / 4;
-        float leftCircleNextX = leftCircleX + mWidth / 4;
-        int leftCircleY = mHeight / 2;
-
         mPath.reset();
         mPath.moveTo(leftCircleX, leftCircleY + radius);
         mPath.addArc(new RectF(leftCircleX - radius, leftCircleY - radius, leftCircleX + radius, leftCircleY + radius), 90, 180);
-        mPath.lineTo(leftCircleNextX, leftCircleY - radius);
+        mPath.lineTo(rightCircleX, leftCircleY - radius);
 
-        mPath.addArc(new RectF(leftCircleNextX - radius, leftCircleY - radius, leftCircleNextX + radius, leftCircleY + radius), -90, 180);
+        mPath.addArc(new RectF(rightCircleX - radius, leftCircleY - radius, rightCircleX + radius, leftCircleY + radius), -90, 180);
         mPath.lineTo(leftCircleX, leftCircleY + radius);
-        mPath.close();
+//        mPath.close();
         canvas.drawPath(mPath, mPaint);
     }
 
@@ -74,14 +105,16 @@ public class SelectView extends View {
 
     public void setPosition(int position) {
         this.position = position;
+        invalidate();
     }
 
-    public int getRadius() {
+    public float getRadius() {
         return radius;
     }
 
-    public void setRadius(int radius) {
+    public void setRadius(float radius) {
         this.radius = radius;
+        invalidate();
     }
 
     public float getLeftCircleX() {
@@ -90,6 +123,25 @@ public class SelectView extends View {
 
     public void setLeftCircleX(float leftCircleX) {
         this.leftCircleX = leftCircleX;
+        invalidate();
+    }
+
+    public float getRightCircleX() {
+        return rightCircleX;
+    }
+
+    public void setRightCircleX(float rightCircleX) {
+        this.rightCircleX = rightCircleX;
+        invalidate();
+    }
+
+    public int getCirclePositionY() {
+        return circlePositionY;
+    }
+
+    public void setCirclePositionY(int circlePositionY) {
+        this.circlePositionY = circlePositionY;
+        invalidate();
     }
 
     public static final Property<SelectView, Float> LEFT_CIRCLE_X =
@@ -102,6 +154,32 @@ public class SelectView extends View {
                 @Override
                 public void set(SelectView object, Float value) {
                     object.setLeftCircleX(value);
+                }
+            };
+
+    public static final Property<SelectView, Float> RIGHT_CIRCLE_X =
+            new Property<SelectView, Float>(Float.class, "rightCircleX") {
+                @Override
+                public Float get(SelectView object) {
+                    return object.getRightCircleX();
+                }
+
+                @Override
+                public void set(SelectView object, Float value) {
+                    object.setRightCircleX(value);
+                }
+            };
+
+    public static final Property<SelectView, Integer> CIRCLE_POSITION_Y =
+            new Property<SelectView, Integer>(Integer.class, "circlePositionY") {
+                @Override
+                public Integer get(SelectView object) {
+                    return object.getCirclePositionY();
+                }
+
+                @Override
+                public void set(SelectView object, Integer value) {
+                    object.setCirclePositionY(value);
                 }
             };
 }

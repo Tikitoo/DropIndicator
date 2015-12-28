@@ -96,13 +96,6 @@ public class DropIndicator extends View {
         for (int i = 0; i < mPagerCount; i++) {
             canvas.drawCircle(getWidth2() / (mPagerCount + 3) * (i + 2) , mHeight / 2, rightCircleRadius, mNormalPaint);
         }
-        /*for (int i = 0; i < mPagerCount; i++) {
-            if (i == mPosition) {
-//                canvas.drawCircle(getWidth() / (mPagerCount + 3) * (i + 2), mHeight / 2, normalCircleRadius, mNormalPaintDefaulSelect);
-            } else {
-                canvas.drawCircle(getWidth() / (mPagerCount + 3) * (i + 2), mHeight / 2, leftCircleRadius, mNormalPaint);
-            }
-        }*/
 
         switch (mMode) {
             case MODE_NORMAL:
@@ -207,31 +200,6 @@ public class DropIndicator extends View {
         rightPointAnimator.setInterpolator(new AccelerateInterpolator(1.5F));
         mAnimators.add(rightPointAnimator);
 
-        /*ObjectAnimator leftCircleRadiusAnimator = ObjectAnimator.ofFloat(this, "rightCircleRadius", mMinCircleRadius, mMaxCircleRadius);
-        leftCircleRadiusAnimator.setDuration(5000L);
-        leftCircleRadiusAnimator.setInterpolator(new AccelerateInterpolator(1.5F));
-        mAnimators.add(leftCircleRadiusAnimator);
-
-        ObjectAnimator rightCircleRadiusAnimator = ObjectAnimator.ofFloat(this, "leftCircleRadius", mMaxCircleRadius, mMinCircleRadius);
-        rightCircleRadiusAnimator.setDuration(5000L);
-        rightCircleRadiusAnimator.setInterpolator(new DecelerateInterpolator(0.8F));
-        mAnimators.add(rightCircleRadiusAnimator);*/
-
-        /*int color1 = mColors.get(0);
-        int color2 = mColors.get(0);
-        ValueAnimator paintColorAnimator = ObjectAnimator.ofInt(color1, color2);
-        paintColorAnimator.setDuration(5000L);
-        paintColorAnimator.setEvaluator(new ArgbEvaluator());
-        paintColorAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        paintColorAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-            public void onAnimationUpdate(ValueAnimator animator) {
-                mPaint.setColor(mColors.get(0));
-                mNormalPaint.setColor(mColors.get(0));
-                mNormalPaintDefaulSelect.setColor(mColors.get(0));
-            }
-        });
-        mAnimators.add(paintColorAnimator);*/
 
     }
 
